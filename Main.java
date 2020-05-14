@@ -6,11 +6,21 @@ public class Main {
 
     public static void main(String[] args)
     {
-        //Player move
-        char player1 = 'X';
-        char player2 ='O';
-        new Board().makeBoard();
-        new Game().move(player1);
+        //display the empty board
+
+        new Board();
+        Board.makeBoard();
+
+        Game game = new Game();
+
+        new Players().playerMoves();
+
+        //receive the first player's (not be confused with player1) mark or piece
+
+
+
+
+
 
     }
 }
