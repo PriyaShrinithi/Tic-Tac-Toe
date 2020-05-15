@@ -9,15 +9,9 @@ class Game extends Board
         super();
     }
     //win case conditions
-    private boolean case1 = Board.emptyBoard[0] == Board.emptyBoard[1] && Board.emptyBoard[0] == Board.emptyBoard[2] && Board.emptyBoard[0] != ' ';
-    private boolean case2 = Board.emptyBoard[0] == Board.emptyBoard[3] && Board.emptyBoard[0] == Board.emptyBoard[6] && Board.emptyBoard[0] != ' ';
-    private boolean case3 = Board.emptyBoard[0] == Board.emptyBoard[4] && Board.emptyBoard[0] == Board.emptyBoard[8] && Board.emptyBoard[0] != ' ';
-    private boolean case4 = Board.emptyBoard[1] == Board.emptyBoard[4] && Board.emptyBoard[1] == Board.emptyBoard[7] && Board.emptyBoard[1] != ' ';
-    private boolean case5 = Board.emptyBoard[3] == Board.emptyBoard[4] && Board.emptyBoard[3] == Board.emptyBoard[5] && Board.emptyBoard[3] != ' ';
-    private boolean case6 = Board.emptyBoard[6] == Board.emptyBoard[7] && Board.emptyBoard[6] == Board.emptyBoard[8] && Board.emptyBoard[6] != ' ';
-    private boolean case7 = Board.emptyBoard[2] == Board.emptyBoard[5] && Board.emptyBoard[2] == Board.emptyBoard[8] && Board.emptyBoard[2] != ' ';
-    private boolean case8 = Board.emptyBoard[2] == Board.emptyBoard[4] && Board.emptyBoard[2] == Board.emptyBoard[6] && Board.emptyBoard[2] != ' ';
 
+
+    char[] players = {'X', 'O'};
 
 
     /*the plan is to enter the move as an argument
@@ -25,9 +19,11 @@ class Game extends Board
      * else warn the player
     */
     private int pos;
+    private int count = 0;
+    //switch position to be entered from 1 rather than 0
     private void position()
     {
-        System.out.println("Enter postion");
+        System.out.println("Enter position");
         Scanner scan = new Scanner(System.in);
         pos = scan.nextInt();
         /*handle exception:
@@ -36,27 +32,47 @@ class Game extends Board
          */
     }
 
-    //figure out alternating players
+    //when someone wins, sto the match
 
     void move(char pMove)
     {
+        if(count >= 9)
+            throw new IndexOutOfBoundsException("This is a Draw");
+
         position();
         if(Board.emptyBoard[pos]==' ')
         {
             emptyBoard[pos] = pMove;
+            Board.makeBoard();
+            if(score())
+            {
+                System.out.println("Winner: " +pMove);
+            }
         }
-        Board.makeBoard();
-        score(pMove);
-    }
 
-
-    void score(char pMove)
-    {
-
-        if(case1 || case2 || case3 || case4 || case5 || case6 || case7 || case8)
+        if(pMove == players[0])
         {
-            System.out.println("Winner: " +pMove);
+            move(players[1]);
         }
+
+        else
+        {
+            move(players[0]);
+
+        }
+        count++;
     }
 
+    private boolean score()
+    {
+        return Board.emptyBoard[0] == Board.emptyBoard[1] && Board.emptyBoard[0] == Board.emptyBoard[2] && Board.emptyBoard[0] != ' '||
+        Board.emptyBoard[0] == Board.emptyBoard[3] && Board.emptyBoard[0] == Board.emptyBoard[6] && Board.emptyBoard[0] != ' '||
+        Board.emptyBoard[0] == Board.emptyBoard[4] && Board.emptyBoard[0] == Board.emptyBoard[8] && Board.emptyBoard[0] != ' '||
+        Board.emptyBoard[1] == Board.emptyBoard[4] && Board.emptyBoard[1] == Board.emptyBoard[7] && Board.emptyBoard[1] != ' '||
+        Board.emptyBoard[2] == Board.emptyBoard[5] && Board.emptyBoard[2] == Board.emptyBoard[8] && Board.emptyBoard[2] != ' '||
+        Board.emptyBoard[6] == Board.emptyBoard[7] && Board.emptyBoard[6] == Board.emptyBoard[8] && Board.emptyBoard[6] != ' '||
+        Board.emptyBoard[2] == Board.emptyBoard[4] && Board.emptyBoard[2] == Board.emptyBoard[6] && Board.emptyBoard[2] != ' '||
+        Board.emptyBoard[3] == Board.emptyBoard[4] && Board.emptyBoard[3] == Board.emptyBoard[5] && Board.emptyBoard[3] != ' ';
+
+    }
 }
