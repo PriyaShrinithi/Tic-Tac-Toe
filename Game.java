@@ -26,30 +26,34 @@ class Game extends Board
         System.out.println("Enter position");
         Scanner scan = new Scanner(System.in);
         pos = scan.nextInt();
+
         /*handle exception:
-         * pos >=9 is false
          * pos occupied is false
          */
-    }
 
-    //when someone wins, sto the match
+        }
+
+    //when someone wins, stop the match
 
     void move(char pMove)
     {
-        if(count >= 9)
-            throw new IndexOutOfBoundsException("This is a Draw");
-
-        position();
-        if(Board.emptyBoard[pos]==' ')
+        try
         {
-            emptyBoard[pos] = pMove;
-            Board.makeBoard();
-            if(score())
+            position();
+            if (Board.emptyBoard[pos] == ' ')
             {
-                System.out.println("Winner: " +pMove);
+                emptyBoard[pos] = pMove;
+                Board.makeBoard();
+                if (score())
+                {
+                    System.out.println("Winner: " + pMove);
+                }
             }
         }
-
+        catch(ArrayIndexOutOfBoundsException e)
+        {
+            System.out.println("Invalid Input");
+        }
         if(pMove == players[0])
         {
             move(players[1]);
