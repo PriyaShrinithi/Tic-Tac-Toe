@@ -6,29 +6,23 @@ import java.util.Scanner;
 class Players extends Game
 {
 
-
+    private char player;
     Players()
     {
 
     }
 
-    void playerMoves()
-    {
+    void playerMoves() {
         System.out.println("Enter option to be marked");
         Scanner scan = new Scanner(System.in);
-        char player = scan.next().charAt(0);
-
+        player = scan.next().charAt(0);
         if(player == players[0])
         {
             new Game().move(players[0]);
         }
-        else if(player == players[1])
-        {
-            new Game().move(players[1]);
-        }
         else
         {
-            //redo
+            new Game().move(players[1]);
         }
     }
 }

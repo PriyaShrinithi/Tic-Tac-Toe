@@ -26,46 +26,45 @@ class Game extends Board
         System.out.println("Enter position");
         Scanner scan = new Scanner(System.in);
         pos = scan.nextInt();
-
-        /*handle exception:
-         * pos occupied is false
-         */
-
         }
 
     //when someone wins, stop the match
 
-    void move(char pMove)
-    {
+    void move(char pMove) {
         try
         {
+            if(count==8) //check if all spaces are occupied
+            {
+                throw new GameException();
+            }
             position();
             if (Board.emptyBoard[pos] == ' ')
             {
                 emptyBoard[pos] = pMove;
                 Board.makeBoard();
-                if (score())
-                {
-                    System.out.println("Winner: " + pMove);
-                }
+            }
+
+            if (score())
+            {
+                System.out.println("Winner: " +pMove);
+                throw new GameException();
             }
         }
-        catch(ArrayIndexOutOfBoundsException e)
+        catch(ArrayIndexOutOfBoundsException | GameException a)
         {
             System.out.println("Invalid Input");
         }
-        if(pMove == players[0])
-        {
-            move(players[1]);
-        }
-
-        else
-        {
-            move(players[0]);
-
-        }
+        changePlay(pMove);
         count++;
     }
+    private void changePlay(char pMove)
+    {
+        if(pMove == players[0])
+            move(players[1]);
+        else
+            move(players[0]);
+    }
+
 
     private boolean score()
     {
@@ -77,6 +76,21 @@ class Game extends Board
         Board.emptyBoard[6] == Board.emptyBoard[7] && Board.emptyBoard[6] == Board.emptyBoard[8] && Board.emptyBoard[6] != ' '||
         Board.emptyBoard[2] == Board.emptyBoard[4] && Board.emptyBoard[2] == Board.emptyBoard[6] && Board.emptyBoard[2] != ' '||
         Board.emptyBoard[3] == Board.emptyBoard[4] && Board.emptyBoard[3] == Board.emptyBoard[5] && Board.emptyBoard[3] != ' ';
-
     }
+
+    private boolean endGame()
+    {
+        //case draw: all boxes are filled
+
+        if(Board.emptyBoard[0] != ' ' && Board.emptyBoard[1] != ' ' && Board.emptyBoard[2] != ' '&&
+           Board.emptyBoard[3] != ' ' && Board.emptyBoard[4] != ' '&& Board.emptyBoard[5] != ' ' &&
+           Board.emptyBoard[6] != ' ' && Board.emptyBoard[7] != ' '&& Board.emptyBoard[8] != ' ')
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+
 }
